@@ -2,7 +2,7 @@ let form = document.getElementById("signUp");
 form.addEventListener("submit", saveToLocal);
 
 
- function saveToLocal(event){
+  function saveToLocal(event){
     event.preventDefault();
     const name = event.target.name.value;
     const email = event.target.email.value;
@@ -20,8 +20,15 @@ form.addEventListener("submit", saveToLocal);
     
     axios.post("http://localhost:3000/user/sign-up" ,obj)
     .then(res =>{
+        console.log(res)
+        if(res.status==205){
+            alert("User Already Exists Please Login")
+        }
+        else{
+            alert(res.data.message);
+        }
         
-        console.log(res);
+        
         
 
     })
