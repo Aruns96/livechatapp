@@ -19,8 +19,16 @@ form.addEventListener("submit", saveToLocal);
     axios.post("http://localhost:3000/user/login" ,obj)
     .then(res =>{
         console.log(res);
-        alert(res.data.message);
+
+        if (res.status == 203){
+           alert("password incorrect")
+        }else if(res.status == 205){
+            alert("user not exists")
+        }else{
+            alert(res.data.message);    
+        }
         
+        localStorage.setItem("token",res.data.token);
 
     })
     .catch(e => {

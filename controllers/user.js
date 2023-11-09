@@ -1,7 +1,10 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-
+function generateToken(id){
+    return jwt.sign({userId:id},"secretKey");
+}
 
 const postSignup = async(req,res)=>{
   
@@ -53,10 +56,10 @@ const postLogin = async(req,res)=>{
                 throw new Error("something went wrong")
             }
             if(result === true){
-                return res.status(201).json({message:"user login succesfully"});
+                return res.status(201).json({message:"user login succesfully",token:generateToken(user[0].id)});
                
             }else{
-                return res.status(401).json({message:"password incorrect"})
+                return res.status(203).json({message:"password incorrect"})
             }
           })
             
@@ -64,7 +67,7 @@ const postLogin = async(req,res)=>{
            
            
         }else{
-            return res.status(404).json({message:"user not found"})
+            return res.status(205).json({message:"user not found"})
         }
 
     }catch(e){
