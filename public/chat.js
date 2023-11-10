@@ -1,35 +1,37 @@
 let chat = document.getElementById("chat");
-chat.addEventListener("submit", saveToLocal);
+//chat.addEventListener("submit", saveToLocal);
 
 let userlist = document.getElementById("userlist");
 
 let msglist = document.getElementById("msglist");
-let msg = document.getElementById("msg");
+let message = document.getElementById("message");
 let sendbtn = document.getElementById("send");
 
 
-window.addEventListener('DOMContentLoaded',displayUsers)
+document.addEventListener('DOMContentLoaded',displayUsers)
 async function displayUsers(){
     try{
-        
-        let res=await axios.get('http://localhost:3000/chat/users')
+        let token=localStorage.getItem('token')
+        let res=await axios.get('http://localhost:3000/chat/users',{headers:{Authorization:token}});
+        //console.log("users",res);
         userlist.innerHTML=''
-        for(let i=0;i<res.data.length;i++){
-            userlist.innerHTML+=`<li id="${res.data[i].id}" >${res.data[i].name} joined</li>`
+        for(let i=0;i<res.data.users.length;i++){
+            userlist.innerHTML+=`<li id="${res.data.users[i].id}" >${res.data.users[i].name} joined</li>`
         }
-        displaymsg(res)
+        displaymsg()
     }
     catch(err){
         console.log(err)
     }
     
 }
-async function displaymsg(res){
+async function displaymsg(){
     try{
-       
+       let res = await axios.get('http://localhost:3000/chat/msg');
+       console.log("msg",res)
         msglist.innerHTML=''
-            for(let i=0;i<res.length;i++){
-                msglist.innerHTML+=`<li >${res[i].user.name} : ${res[i].msg}</li>`
+            for(let i=0;i<res.data.msg.length;i++){
+                msglist.innerHTML+=`<li >${res.data.msg[i].user.name} : ${res.data.msg[i].msg}</li>`
         }
         
       
@@ -41,16 +43,18 @@ async function displaymsg(res){
 sendbtn.addEventListener('click',(e)=>{
     e.preventDefault()
     
-    msg.value==''?console.log('No Message'):send(msg.value)
+    message.value==''?console.log('No Message'):send(message.value);
+    message.value = " "
 })
 async function send(msg){
     try{
-        
-        input.value=' '
+        let token=localStorage.getItem('token')
+        let data = message.value;
+        //console.log(data);
         
        
-        if(msg!==''){
-            await axios.post(`http://localhost:3000/chat/send/`,{data})
+        if(message!==''){
+            await axios.post(`http://localhost:3000/chat/send`,{data},{headers:{Authorization:token}})
         }
         
     }
