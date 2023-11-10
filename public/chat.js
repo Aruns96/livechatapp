@@ -16,22 +16,27 @@ async function displayUsers(){
         //console.log("users",res);
         userlist.innerHTML=''
         for(let i=0;i<res.data.users.length;i++){
-            userlist.innerHTML+=`<li id="${res.data.users[i].id}" >${res.data.users[i].name} joined</li>`
+            userlist.innerHTML+=`<li class="list-group-item"  id="${res.data.users[i].id}" >${res.data.users[i].name} joined</li>`
         }
-        displaymsg()
+        
+            displaymsg()
+       
+       
     }
     catch(err){
         console.log(err)
     }
     
 }
+
 async function displaymsg(){
     try{
-       let res = await axios.get('http://localhost:3000/chat/msg');
+        
+      let res = await axios.get('http://localhost:3000/chat/msg');
        console.log("msg",res)
         msglist.innerHTML=''
             for(let i=0;i<res.data.msg.length;i++){
-                msglist.innerHTML+=`<li >${res.data.msg[i].user.name} : ${res.data.msg[i].msg}</li>`
+                msglist.innerHTML+=`<li class="list-group-item" >${res.data.msg[i].user.name} : ${res.data.msg[i].msg}</li>`
         }
         
       
@@ -56,7 +61,9 @@ async function send(msg){
         if(message!==''){
             await axios.post(`http://localhost:3000/chat/send`,{data},{headers:{Authorization:token}})
         }
-        
+        setTimeout(()=>{
+            displaymsg()
+        },1000);
     }
     catch(error){
         console.log(error)
