@@ -29,7 +29,7 @@ form.addEventListener("submit", saveToLocal);
         }
         
         localStorage.setItem("token",res.data.token);
-
+        window.location.href = "./chat.html";
     })
     .catch(e => {
         console.log(e)
