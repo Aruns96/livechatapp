@@ -4,19 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
+    <script defer src="./chat.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <link rel="stylesheet" href="./chat.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h1>Chat App</h1>
+    <h1 class="text-center text-bg-primary ">Chat App</h1>
     <form id="chat">
         
-        <input type="text" name="message" id="message" placeholder="message" >
-        <button id="send">send</button>
+        <input class="form-control" type="text" name="message" id="message" placeholder="message" >
+        <button class="btn btn-outline-info" id="send">send</button>
         
     </form>
-    <ul id="userlist"></ul>
-    <ul id="msglist"></ul>
 
-    <script src="./chat.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <div class="conatiner">
+        <div class="col">
+            <h3 class="text-center text-bg-light">Members</h3>
+            <ul class="list-group list-group-flush" id="userlist"></ul>
+        </div>
+        <div class="col">
+            <h3 class="text-center text-bg-light">Messages</h3>
+            <ul class="list-group list-group-flush" id="msglist"></ul>
+        </div>
+        
+    
+    </div>
+    
+
+    
 </body>
 </html>
