@@ -41,7 +41,26 @@ const getMsg = async(req,res)=>{
        
         include:{model:User,attributes:['name']}});
         //console.log(msg);
-        res.status(200).json({msg})
+        res.status(200).json(msg)
+            
+           
+      
+
+    }catch(e){
+        res.status(500).json({error:e});
+    }
+}
+
+const getLastMsg = async(req,res)=>{
+  
+    try{
+        let msg = await Msg.findAll({attributes:['id','msg'],
+       
+        include:{model:User,attributes:['name']}});
+        //console.log(msg);
+         let lastmsg =  msg[msg.length-1];
+         //console.log(lastmsg);
+        res.status(200).json(lastmsg)
             
            
       
@@ -52,4 +71,4 @@ const getMsg = async(req,res)=>{
 }
 
 
-module.exports ={getUsers,postSend,getMsg}
+module.exports ={getUsers,postSend,getMsg,getLastMsg}
