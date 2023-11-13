@@ -13,26 +13,40 @@
 </head>
 <body>
     <h1 class="text-center text-bg-primary ">Chat App</h1>
-    <form id="chat">
-        
-        <input class="form-control" type="text" name="message" id="message" placeholder="message" >
-        <button class="btn btn-outline-info" id="send">send</button>
-        
-    </form>
+   
 
     <div class="conatiner">
-        <div class="col">
-            <h3 class="text-center text-bg-light">Members</h3>
-            <ul class="list-group list-group-flush" id="userlist"></ul>
+        <div class="row">
+            <div class="col-4">
+                <h3 class="text-center text-bg-light">Members</h3>
+                <ul class="list-group list-group-flush" id="userlist"></ul>
+            </div>
+            <div class="col-4">
+                <h3 class="text-center text-bg-light">Messages</h3>
+                <ul class="list-group list-group-flush" id="msglist"></ul>
+            </div>
+            <div class="col-4">
+               
+                <h3 class="text-center text-bg-light">Groups</h3> 
+               
+                <input type="button" class="btn btn-outline-info" value="Create Group" id="group">
+                <ul class="list-group list-group-flush" id="grplist"></ul> 
+    
+            </div>
         </div>
-        <div class="col">
-            <h3 class="text-center text-bg-light">Messages</h3>
-            <ul class="list-group list-group-flush" id="msglist"></ul>
-        </div>
-        
+       
     
     </div>
-    
+    <div>
+        <h3>send message</h3>
+        <form id="chat">
+        
+            <input class="form-control" type="text" name="message" id="message" placeholder="message" >
+            <button class="btn btn-outline-info" id="send">send</button>
+            
+        </form>
+    </div>
+   
 
     
 </body>

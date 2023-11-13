@@ -4,7 +4,7 @@ const authorization = require("../middlewares/auth")
 
 const router = express.Router();
 
-router.get("/users",chatControllers.getUsers);
+router.get("/users",authorization.authorize,chatControllers.getUsers);
 router.post("/send",authorization.authorize,chatControllers.postSend);
 
 router.get("/msg",chatControllers.getMsg);

@@ -30,6 +30,7 @@ form.addEventListener("submit", saveToLocal);
         
         localStorage.setItem("token",res.data.token);
         window.location.href = "./chat.html";
+        localStorage.setItem('groupid',0)
     })
     .catch(e => {
         console.log(e)
