@@ -5,7 +5,10 @@ body{
     font-family: Arial, sans-serif;
     
 }
-
+.lgb {
+    align-items: center;
+    
+  }
 .container{
    
     padding-bottom: 90px;

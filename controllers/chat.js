@@ -119,5 +119,14 @@ const getLastMsg = async(req,res)=>{
     }
 }
 
-
-module.exports ={getUsers,postSend,getMsg,getLastMsg}
+const suser=async(req,res,next)=>{
+    let data=req.query.data
+    let user=await User.findAll({
+        where:{[Op.or]:[{
+            name:{[Op.like]: '%'+data+'%'}
+        }]}
+    })
+   
+    res.status(200).json(user);
+}
+module.exports ={getUsers,postSend,getMsg,getLastMsg,suser}
