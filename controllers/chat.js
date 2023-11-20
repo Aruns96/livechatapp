@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Msg = require("../models/message");
 const {Op}=require('sequelize');
+const S3service=require('../service/awss3')
 
 
 const getUsers = async(req,res)=>{
@@ -129,4 +130,37 @@ const suser=async(req,res,next)=>{
    
     res.status(200).json(user);
 }
-module.exports ={getUsers,postSend,getMsg,getLastMsg,suser}
+const upload=async(req,res,next)=>{
+    try{
+        let userId=req.user.id
+        let groupid=req.query.gpid
+        if(groupid==0){
+            groupid=null
+        }
+        const file =req.files.file
+        const filename=`${userId}/${new Date()}${file.name}`
+        const fileUrl=await S3service.uploadToS3(file,filename)
+        await Msg.create({msg:fileUrl,userId:userId,groupId:groupid})
+        res.status(200).json({success:true,message:'Message Send'})
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({message:error})
+    }
+}
+const user1=async(req,res,next)=>{
+    try{
+        let data=req.query.data
+        let userId=req.user.id
+        let users=await User.findAll({
+            where:{id:{[Op.not]:userId},name:{[Op.like]: `%${data}%`}}
+        })
+        res.status(200).json(users)
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({message:error})
+    }
+}
+
+module.exports ={getUsers,postSend,getMsg,getLastMsg,suser,upload,user1}

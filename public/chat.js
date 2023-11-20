@@ -30,16 +30,21 @@ function logout(){
     localStorage.clear()
     window.location.assign('login.html')
 }
-createGroup.addEventListener('click',create)
+createGroup.addEventListener('click',()=>{
+    flag = false;
+    create();
+})
 async function create(){
     try{
-        console.log('hai')
+       
         let token=localStorage.getItem('token')
         let promise=await axios.get('http://localhost:3000/chat/users',{headers:{Authorization:token}});
-        let promise1=await axios.get(`http://localhost:3000/group/nusers/${gpid}`,{headers:{Authorization:token}})
+        let promise1=await axios.get(`http://localhost:3000/group/nusers/${gpid}`,{headers:{Authorization:token}});
+        let promise2=await axios.get(`http://localhost:3000/group/users/${gpid}`,{headers:{Authorization:token}})
         console.log(promise);
         userlist.innerHTML=""
         let div=document.createElement('div')
+        let div1=document.createElement('div')
         let btn=document.createElement('button')
         let btn1=document.createElement('button')
         btn.className="btn btn-outline-info check-btn"
@@ -50,47 +55,91 @@ async function create(){
        
         div.innerHTML='<input type="text" id="grpname" class="form-control" placeholder="Enter New Group Name"><br><input type="text" id="search" class="form-control" placeholder="Search">'
        
+        div.appendChild(div1)
         userlist.appendChild(div)
         
+    //     if(!flag){
+    //         for(let i=0;i<promise.data.length;i++){
+    //         div.innerHTML+=`<li class="list-group-item">
+    //         <input id="${promise.data[i].email}" name="user-list" class="form-check-input" type="checkbox" id=${promise.data[i].name}">
+    //         <label for="${promise.data[i].name}" class="form-check-label" > ${promise.data[i].name}</label></li>`
+        
+    //     userlist.appendChild(btn);
+    //     document.querySelector('.check-btn').addEventListener('click',checkclick)
+    //         }
+    // }
+    // else{
+    //     document.getElementById('grpname').placeholder='Change group name'
+    //     let promise=await axios.get(`http://localhost:3000/group/users/${gpid}`,{headers:{Authorization:token}})
+    //     for(let i=0;i<promise.data.length;i++){
+    //         div.innerHTML+=`<li name="list-gmem" class="list-group-item">
+    //         <label for="${promise.data[i].name}" class="form-check-label" > ${promise.data[i].name}</label>
+    //         <input id="${promise.data[i].email}" name="admin" type="button" class="btn btn-warning" value="Admin">
+    //         <input id="${promise.data[i].email}" name="delete-btn" type="button" class="btn btn-danger" value="x">
+    //         </li>`
+       
+    async function memberslist(promise,promise1,promise2){
         if(!flag){
             for(let i=0;i<promise.data.length;i++){
-            div.innerHTML+=`<li class="list-group-item">
+            div1.innerHTML+=`<li class="list-group-item">
             <input id="${promise.data[i].email}" name="user-list" class="form-check-input" type="checkbox" id=${promise.data[i].name}">
             <label for="${promise.data[i].name}" class="form-check-label" > ${promise.data[i].name}</label></li>`
-        
-        userlist.appendChild(btn);
-        document.querySelector('.check-btn').addEventListener('click',checkclick)
+            userlist.appendChild(btn)
+            document.querySelector('.check-btn').addEventListener('click',checkclick)
+
+        }
+        // for(let i=0;i<promise1.data.length;i++){
+        //     div.innerHTML+=`<li name="list-gmem" class="list-group-item">
+        //     <label for="${promise1.data[i].name}" class="form-check-label" > ${promise1.data[i].name}</label>
+        //     <input id="${promise1.data[i].email}" name="add-btn" type="button" class="btn btn-success" value="+"></li>`
+        }
+        // userlist.appendChild(btn1)
+        // document.querySelector('.change-btn').addEventListener('click',async()=>{
+        //     let name=document.getElementById('grpname').value||'GROUP'
+        //     let uid=0
+        //     let promise=await axios.get(`http://localhost:3000/group/editU/?gpid=${gpid}&uid=${uid}&edit=grp&name=${name}`,{headers:{Authorization:token}})
+        //     location.reload()
+        // })
+        else{
+            document.getElementById('grpname').placeholder='Change group name'
+
+            for(let i=0;i<promise2.data.length;i++){
+                div1.innerHTML+=`<li name="list-gmem" class="list-group-item">
+                <label for="${promise2.data[i].name}" class="form-check-label" > ${promise2.data[i].name}</label>
+                <input id="${promise2.data[i].email}" name="admin" type="button" class="btn btn-warning" value="Admin">
+                <input id="${promise2.data[i].email}" name="delete-btn" type="button" class="btn btn-danger" value="x">
+                </li>`
             }
-    }
-    else{
-        document.getElementById('grpname').placeholder='Change group name'
-        let promise=await axios.get(`http://localhost:3000/group/users/${gpid}`,{headers:{Authorization:token}})
-        for(let i=0;i<promise.data.length;i++){
-            div.innerHTML+=`<li name="list-gmem" class="list-group-item">
-            <label for="${promise.data[i].name}" class="form-check-label" > ${promise.data[i].name}</label>
-            <input id="${promise.data[i].email}" name="admin" type="button" class="btn btn-warning" value="Admin">
-            <input id="${promise.data[i].email}" name="delete-btn" type="button" class="btn btn-danger" value="x">
-            </li>`
+            for(let i=0;i<promise1.data.length;i++){
+                div1.innerHTML+=`<li name="list-gmem" class="list-group-item">
+                <label for="${promise1.data[i].name}" class="form-check-label" > ${promise1.data[i].name}</label>
+                <input id="${promise1.data[i].email}" name="add-btn" type="button" class="btn btn-success" value="+"></li>`
+            }
+            userlist.appendChild(btn1)
+            document.querySelector('.change-btn').addEventListener('click',async()=>{
+                let name=document.getElementById('grpname').value||'GROUP'
+                let uid=0
+                let promise=await axios.get(`http://localhost:3000/group/editU/?gpid=${gpid}&uid=${uid}&edit=grp&name=${name}`,{headers:{Authorization:token}})
+                location.reload()
+            })
         }
-        for(let i=0;i<promise1.data.length;i++){
-            div.innerHTML+=`<li name="list-gmem" class="list-group-item">
-            <label for="${promise1.data[i].name}" class="form-check-label" > ${promise1.data[i].name}</label>
-            <input id="${promise1.data[i].email}" name="add-btn" type="button" class="btn btn-success" value="+"></li>`
-        }
-        userlist.appendChild(btn1)
-        document.querySelector('.change-btn').addEventListener('click',async()=>{
-            let name=document.getElementById('grpname').value||'GROUP'
-            let uid=0
-            let promise=await axios.get(`http://localhost:3000/group/editU/?gpid=${gpid}&uid=${uid}&edit=grp&name=${name}`,{headers:{Authorization:token}})
-            location.reload()
-        })
     }
+    memberslist(promise,promise1,promise2)
     let search=document.getElementById('search')
     search.addEventListener('keyup',async()=>{
-        console.log(search.value)
-        let data= search.value
-        let promise=await axios.get(`http://localhost:3000/chat/susers/?data=${data}`,{headers:{Authorization:token}}) 
-        console.log(promise)
+        // console.log(search.value)
+        // let data= search.value
+        // let promise=await axios.get(`http://localhost:3000/chat/susers/?data=${data}`,{headers:{Authorization:token}}) 
+        // console.log(promise)
+        let li=document.getElementsByName('list-gmem')
+            let data=search.value
+            div1.innerHTML=''
+            let promise=await axios.get(`http://localhost:3000/chat/users1/?data=${data}`,{headers:{Authorization:token}})
+            let promise1=await axios.get(`http://localhost:3000/group/nusers1/?data=${data}&gpid=${gpid}`,{headers:{Authorization:token}})
+            let promise2=await axios.get(`http://localhost:3000/group/users1/?data=${data}&gpid=${gpid}`,{headers:{Authorization:token}})
+            console.log('promise',promise) 
+            console.log('promise1',promise1)
+            memberslist(promise,promise1,promise2)
     }
    
     )
@@ -191,12 +240,13 @@ async function getGroupMsg(e){
         //     location.reload(1)
         // }
         else{
+       
         localStorage.removeItem('data')
         localStorage.setItem('groupid',e.target.id)
         groupid=e.target.id
-        local(e.target.id)
         gmdisplay(e.target.id)
         local(e.target.id)
+    
     }
     }
     catch(error){
@@ -308,32 +358,30 @@ async function displaymsg(){
 sendbtn.addEventListener('click',(e)=>{
     e.preventDefault()
     
-    message.value==''?console.log('No Message'):send(groupid,message.value);
+    //message.value==''?console.log('No Message'):send(groupid,message.value);
+    let file=document.getElementById('fileupload').files[0]
+    let formData
+    if(file){
+        formData = new FormData();
+        formData.append("file", file);
+    }
+    message.value==''&&!file?console.log('No Message'):send(groupid,message.value,formData)
     message.value = " "
 })
-async function send(groupid,msg){
+async function send(groupid,msg,file){
     try{
         let token=localStorage.getItem('token')
         let data = {groupid,msg};
         //console.log(data);
-        
-       
-        if(message!==''){
-            await axios.post(`http://localhost:3000/chat/send`,{data},{headers:{Authorization:token}})
+        if(file){
+            await axios.post(`http://localhost:3000/chat/upload/?gpid=${groupid}`,file,{headers:{Authorization:token,"Content-Type": "multipart/form-data"}})
+            document.getElementById("fileupload").value =""
         }
-    //     let res=await axios.get('http://localhost:3000/chat/lastmsg');
-    //     console.log("new msg res",res)
-    //     let old = JSON.parse(localStorage.getItem('data'))
-    //    console.log("old",old)
-    //     let comb = [...old,res.data];
-    //     if(comb.length > 10){
-    //         comb.shift();
-            
-    //     }
-    //     localStorage.setItem('data',JSON.stringify(comb))
-    //     console.log("combined",comb);
-    //     //msglist.innerHTML+=`<li class="list-group-item" >${res.data.user.name} : ${res.data.msg}</li>`
-    //      displaymsg()
+        if(data.msg!==''){
+            await axios.post(`http://localhost:3000/chat/send/`,{data},{headers:{Authorization:token}})
+        }
+       
+      
     local(groupid);
      
     }
