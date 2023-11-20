@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const path = require("path");
 dotenv.config();
 const cors = require("cors");
 const sequelize = require("./utils/database")
@@ -24,6 +25,9 @@ app.use("/user",userRoute);
 app.use("/chat",chatRoute);
 app.use("/group",groupRoute);
 
+app.use((req,res,next)=>{
+    res.sendFile(path.join(__dirname,`./public/${req.url}`))
+})
 
 User.hasMany(Msg);
 Msg.belongsTo(User);

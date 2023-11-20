@@ -159,9 +159,9 @@ async function grpdisplay(){
             for(let i=0;i<promise.data.admingroup.length;i++){
                 grplist.innerHTML+=`<button ><li id=${promise.data.admingroup[i].id} name='grp-list' class="list-group-item" >${promise.data.admingroup[i].name}<input type="button" class="btn btn-primary" value="Edit"><input type="button" class="btn btn-danger"  value="Delete"></li></button>`
             }
-            for(let i=0;i<promise.data.group.length;i++){
-                grplist.innerHTML+=`<button ><li id=${promise.data.group[i].id} name='grp-list' class="list-group-item" >${promise.data.group[i].name}<input type="button" class="btn btn-warning"  value="Remove"></li></button>`
-        } 
+        //     for(let i=0;i<promise.data.group.length;i++){
+        //         grplist.innerHTML+=`<button ><li id=${promise.data.group[i].id} name='grp-list' class="list-group-item" >${promise.data.group[i].name}<input type="button" class="btn btn-warning"  value="Remove"></li></button>`
+        // } 
         let groupList=grplist.children
        
         for(let i=0;i<groupList.length;i++){
@@ -185,11 +185,11 @@ async function getGroupMsg(e){
             let promise=await axios.get(`http://localhost:3000/group/delete/?grpid=${grpid}`,{headers:{Authorization:token}})
             location.reload(1)
         }
-        else if(e.target.value=='Remove'){
-            let grpid=e.target.parentElement.id
-            let promise=await axios.get(`http://localhost:3000/group/remove/?grpid=${grpid}`,{headers:{Authorization:token}})
-            location.reload(1)
-        }
+        // else if(e.target.value=='Remove'){
+        //     let grpid=e.target.parentElement.id
+        //     let promise=await axios.get(`http://localhost:3000/group/remove/?grpid=${grpid}`,{headers:{Authorization:token}})
+        //     location.reload(1)
+        // }
         else{
         localStorage.removeItem('data')
         localStorage.setItem('groupid',e.target.id)
